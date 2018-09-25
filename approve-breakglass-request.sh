@@ -2,12 +2,14 @@
 set -e 
 source $(dirname "$0")/common_funcs.sh
 
-# @TODO: git clone and switch to most recent branch
+git pull
+git checkout (git branch --sort=-committerdate | cat | cut -c 3-)
 
 export REQUEST_COMMIT=$(git rev-list --max-count=1 HEAD)
 
-export COMMIT_ID=$(git rev-list --max-count=1 HEAD)
 check_signature REQUEST_COMMIT REQUESTER_PUBKEYS
+
+git show $REQUEST_COMMIT --show-signature
 
 echo "BREAKGLASS REQUEST IS VALID"
 echo "Do you want to approve it? YES/NO:"
@@ -22,10 +24,5 @@ echo "Selecting key based on current yubikey"
 
 git config user.signingkey $(gpg --card-status | grep 'sec>' | awk '{ print $2 }' | cut -d "/" -f 2)
 
-# @TODO: echo the siature of the most recent commit
-echo "this was validated against ${URL} to be genuine"
-# @TODO: echo diff of commit
-
-echo "do you want to approve this breakglass"
-# @TODO: git commit --allow-empty -m "approve ${COMMIT_ID}"
-# @TODO: git push
+git commit --allow-empty -m "approve ${REQUEST_COMMIT}"
+git push
