@@ -6,7 +6,7 @@ set comment "created by $expect_out(1,string)"
 
 send_user -- "Card holder forename: "
 expect_user -re "(.*)\n"
-set cardholder_forname $expect_out(1,string)
+set cardholder_forename $expect_out(1,string)
 
 send_user -- "Card holder surname: "
 expect_user -re "(.*)\n"
@@ -16,7 +16,7 @@ send_user -- "Card holder email address: "
 expect_user -re "(.*)\n"
 set cardholder_email $expect_out(1,string)
 
-send_user -- "\nProvisioning a YubiKey for $cardholder_forname $cardholder_surname | $cardholder_email | $comment\n"
+send_user -- "\nProvisioning a YubiKey for $cardholder_forename $cardholder_surname | $cardholder_email | $comment\n"
 send_user -- "In 10 seconds this will destructively without further prompt provision the currently inserted yubikey\n\n"
 
 sleep 10
@@ -118,6 +118,6 @@ expect "Enter admin PIN:"
 interact -o -nobuffer -re "Touch policy successfully set" return
 expect eof
 
-eval spawn gpg --armor --export $email
+eval spawn gpg --armor --export $cardholder_email
 expect "END PGP PUBLIC KEY BLOCK"
 expect eof
