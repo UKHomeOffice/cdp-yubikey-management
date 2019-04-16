@@ -1,4 +1,5 @@
-#!/usr/bin/env expect -f
+#!/usr/bin/expect -f
+set timeout 20
 
 send_user -- "Your name: "
 expect_user -re "(.*)\n"
