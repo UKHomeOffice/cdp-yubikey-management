@@ -5,7 +5,7 @@ We issue our engineers with [YubiKeys](https://www.yubico.com/products/yubikey-h
 This repository contains the code we use for provisioning YubiKeys and the scripts we run in CI for validating the authenticity of commits and system actions (breakglass) that require multiple keys to interact to prove validity and authorisation.
 
 ## [provision_card.sh](./provision_card.sh)
-This will provision the yubikey, it is designed to be run on a managed device, which has the following dependencies: 
+This will provision the yubikey, it is designed to be run on a managed device, which has the following dependencies:
  - [expect](https://www.tcl.tk/man/expect5.31/expect.1.html)
  - [GPG](https://gnupg.org)
  - [ykman](https://developers.yubico.com/yubikey-manager/)
@@ -15,6 +15,18 @@ The script:
  - Configures the yubikey to generate a `4096-bit` key
  - Generates the key on the yubikey itself to avoid the key being backed up, or stored anywhere apart from the key itself
  - Personalizes the admin key and user key of the device
+
+## [provision_card_fips.sh](./provision_card_fips)
+This will provision the yubikey fips, it is designed to be run on a managed device, which has the following dependencies:
+ - [expect](https://www.tcl.tk/man/expect5.31/expect.1.html)
+ - [GPG](https://gnupg.org)
+ - [ykman](https://developers.yubico.com/yubikey-manager/)
+
+ The script:
+  - Factory resets the yubikey fips
+  - Configures the yubikey fips to generate a `3072-bit` key
+  - Generates the key on the yubikey fips itself to avoid the key being backed up, or stored anywhere apart from the key itself
+  - Personalizes the admin key and user key of the device
 
 ## [ci-breakglass-validator.sh](./ci-breakglass-validator.sh)
 This is run by the CI platform to validate the breakglass request prior to executing.
@@ -32,7 +44,7 @@ The script:
 
 ## [approve-breakglass-request.sh](./approve-breakglass-request.sh)
 This is run by an approver to approve the engineer's breakglass request.
- 
+
 Dependencies:
  - [git](https://git-scm.com/)
  - [gpg](https://gnupg.org)
